@@ -1,21 +1,21 @@
 (() => {
   const root = globalThis as unknown as Window;
-  const WISP = (root.__wisp ??= {} as Wisp);
+  const FOXFIRE = (root.__foxfire ??= {} as Wisp);
 
-  WISP.PREFIX = "cg-img-";
-  WISP.STORE_KEY = "slotImages"; // { [slotKey]: dataUrl }
+  FOXFIRE.PREFIX = "cg-img-";
+  FOXFIRE.STORE_KEY = "slotImages"; // { [slotKey]: dataUrl }
 
   console.log("NAI Wisp content script injected on:", location.href);
 
-  WISP.slotKeyFromImg = function slotKeyFromImg(img: HTMLImageElement) {
-    return img.dataset.partid?.slice(WISP.PREFIX.length);
+  FOXFIRE.slotKeyFromImg = function slotKeyFromImg(img: HTMLImageElement) {
+    return img.dataset.partid?.slice(FOXFIRE.PREFIX.length);
   };
 
-  WISP.extWrapIdFor = function extWrapIdFor(slotKey: string) {
-    return `wisp-wrap-${CSS.escape(slotKey)}`;
+  FOXFIRE.extWrapIdFor = function extWrapIdFor(slotKey: string) {
+    return `foxfire-wrap-${CSS.escape(slotKey)}`;
   };
 
-  WISP.dataUrlToBlob = function dataUrlToBlob(dataUrl: string) {
+  FOXFIRE.dataUrlToBlob = function dataUrlToBlob(dataUrl: string) {
     const [meta, base64] = dataUrl.split(",");
     const mime =
       (meta.match(/data:(.*?);base64/) || [])[1] ||

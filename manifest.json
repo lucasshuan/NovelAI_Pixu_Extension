@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "NAI Wisp",
+    "name": "NovelAI Foxfire",
     "version": "0.1.0",
-    "description": "Using together with the \"Image Slots\" user script, allows you to replace slots with persistent images stored in the browser.",
+    "description": "Replace NovelAI story images with your own and restore them automatically on reload.",
     "icons": {
         "16": "icon.png",
         "48": "icon.png",
@@ -24,10 +24,10 @@
                 "https://novelai.net/*"
             ],
             "js": [
-                "wisp-core.js",
-                "wisp-template.js",
-                "wisp-storage.js",
-                "wisp-ui.js",
+                "core.js",
+                "template.js",
+                "storage.js",
+                "ui.js",
                 "content.js"
             ],
             "run_at": "document_start"

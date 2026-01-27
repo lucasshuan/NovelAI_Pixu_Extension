@@ -1,42 +1,46 @@
 (() => {
   const root = globalThis as unknown as Window;
-  const WISP = (root.__wisp ??= {} as Wisp);
+  const FOXFIRE = (root.__foxfire ??= {} as Wisp);
 
-  WISP.applyToImage = async function applyToImage(
+  FOXFIRE.applyToImage = async function applyToImage(
     img: HTMLImageElement,
     map: SlotImageMap,
   ) {
     console.log("Found one image!!", map);
     const pid = img.dataset.partid;
-    if (!pid?.startsWith(WISP.PREFIX)) return;
-    const slotKey = WISP.slotKeyFromImg(img);
+    if (!pid?.startsWith(FOXFIRE.PREFIX)) return;
+    const slotKey = FOXFIRE.slotKeyFromImg(img);
     if (!slotKey) return;
     const dataUrl = map[slotKey];
     if (!dataUrl) return;
     if (img.src !== dataUrl) img.src = dataUrl;
   };
 
-  WISP.ensureWrapper = function ensureWrapper(img: HTMLImageElement) {
+  FOXFIRE.ensureWrapper = function ensureWrapper(img: HTMLImageElement) {
     if (!(img instanceof HTMLImageElement)) return;
-    if (!img.dataset.partid?.startsWith(WISP.PREFIX)) return;
+    if (!img.dataset.partid?.startsWith(FOXFIRE.PREFIX)) return;
 
-    const slotKey = WISP.slotKeyFromImg(img);
+    const slotKey = FOXFIRE.slotKeyFromImg(img);
     if (!slotKey) return;
 
     // Already wrapped?
     if (
       img.closest?.(
-        `[data-wisp-wrap="1"][data-slot-key="${CSS.escape(slotKey)}"]`,
+        `[data-foxfire-wrap="1"][data-slot-key="${CSS.escape(slotKey)}"]`,
       )
     )
       return;
 
-    const { wrap, input } = WISP.createWrap(slotKey);
+    const { wrap, input } = FOXFIRE.createWrap(slotKey);
 
     if (!input) return;
 
     wrap.style.cursor = "pointer";
     wrap.style.position = "relative";
+    wrap.style.margin = "0";
+    wrap.style.padding = "0";
+    wrap.style.marginLeft = "0";
+    wrap.style.paddingLeft = "0";
     wrap.style.outline = "2px dashed transparent";
     wrap.style.outlineOffset = "4px";
     wrap.style.transition = "outline-color 120ms ease";
@@ -44,25 +48,30 @@
     img.style.transition = "filter 0.3s ease";
     img.style.position = "relative";
     img.style.zIndex = "1";
+    img.style.display = "block";
+    img.style.margin = "0";
+    img.style.padding = "0";
+    img.style.marginLeft = "0";
+    img.style.paddingLeft = "0";
 
     const dropOverlay = wrap.querySelector(
-      '[data-wisp-drop="1"]',
+      '[data-foxfire-drop="1"]',
     ) as HTMLElement | null;
 
     const saveDataUrl = async (dataUrl: string) => {
-      const map = await WISP.loadMap();
-      map[slotKey] = dataUrl;
-      await WISP.saveMap(map);
       img.src = dataUrl;
+      const map = await FOXFIRE.loadMap();
+      map[slotKey] = dataUrl;
+      await FOXFIRE.saveMap(map);
     };
 
     const handleBlob = async (blob: Blob | undefined) => {
       if (!blob) return;
-      if (blob.type && !blob.type.startsWith("image/")) return;
 
       const reader = new FileReader();
       reader.onload = async () => {
         const dataUrl = String(reader.result);
+        if (!dataUrl.startsWith("data:image/")) return;
         await saveDataUrl(dataUrl);
       };
       reader.readAsDataURL(blob);
@@ -70,7 +79,6 @@
 
     const handleFile = async (file: File | undefined) => {
       if (!file) return;
-      if (!file.type || !file.type.startsWith("image/")) return;
       await handleBlob(file);
     };
 
@@ -144,9 +152,9 @@
       }
     };
 
-    (wrap as any).__wispSetDragActive = setDragActive;
-    (wrap as any).__wispHasImageDrag = hasImageDrag;
-    (wrap as any).__wispHandleDrop = handleDroppedData;
+    (wrap as any).__foxfireSetDragActive = setDragActive;
+    (wrap as any).__foxfireHasImageDrag = hasImageDrag;
+    (wrap as any).__foxfireHandleDrop = handleDroppedData;
 
     input.addEventListener("change", async () => {
       await handleFile(input.files?.[0]);
@@ -192,7 +200,7 @@
     });
 
     const ensureGlobalDropShield = () => {
-      const state = WISP as unknown as { _dragShieldInstalled?: boolean };
+      const state = FOXFIRE as unknown as { _dragShieldInstalled?: boolean };
       if (state._dragShieldInstalled) return;
       state._dragShieldInstalled = true;
 
@@ -200,7 +208,7 @@
 
       const setActiveFor = (wrapEl: HTMLElement | null, active: boolean) => {
         if (!wrapEl) return;
-        const setter = (wrapEl as any).__wispSetDragActive as
+        const setter = (wrapEl as any).__foxfireSetDragActive as
           | ((value: boolean) => void)
           | undefined;
         if (setter) {
@@ -226,7 +234,7 @@
             event.clientY,
           ) as HTMLElement[];
           for (const el of stack) {
-            const match = el.closest?.("[data-wisp-wrap=\"1\"]") as
+            const match = el.closest?.("[data-foxfire-wrap=\"1\"]") as
               | HTMLElement
               | null
               | undefined;
@@ -237,7 +245,7 @@
           event.clientX,
           event.clientY,
         ) as HTMLElement | null;
-        return (target?.closest?.("[data-wisp-wrap=\"1\"]") ??
+        return (target?.closest?.("[data-foxfire-wrap=\"1\"]") ??
           null) as HTMLElement | null;
       };
 
@@ -246,7 +254,7 @@
         data: DataTransfer | null,
       ) => {
         if (!wrapEl) return false;
-        const checker = (wrapEl as any).__wispHasImageDrag as
+        const checker = (wrapEl as any).__foxfireHasImageDrag as
           | ((data: DataTransfer | null) => boolean)
           | undefined;
         return checker ? checker(data) : false;
@@ -257,7 +265,7 @@
         data: DataTransfer | null,
       ) => {
         if (!wrapEl) return;
-        const handler = (wrapEl as any).__wispHandleDrop as
+        const handler = (wrapEl as any).__foxfireHandleDrop as
           | ((data: DataTransfer | null) => Promise<boolean>)
           | undefined;
         if (handler) {
@@ -266,7 +274,7 @@
       };
 
       const hasAnyWrap = () =>
-        document.querySelector("[data-wisp-wrap=\"1\"]") !== null;
+        document.querySelector("[data-foxfire-wrap=\"1\"]") !== null;
 
       const isImageLikeDrag = (data: DataTransfer | null) => {
         if (!data) return false;

@@ -1,13 +1,13 @@
 (() => {
   const root = globalThis as unknown as Window;
-  const WISP = (root.__wisp ??= {} as Wisp);
+  const FOXFIRE = (root.__foxfire ??= {} as Wisp);
 
   async function scanAndEnhance() {
-    const map = await WISP.loadMap();
+    const map = await FOXFIRE.loadMap();
     console.log("searching for images!")
-    document.querySelectorAll(`img[data-partid^="${WISP.PREFIX}"]`).forEach((img) => {
-      WISP.ensureWrapper(img as HTMLImageElement);
-      WISP.applyToImage(img as HTMLImageElement, map);
+    document.querySelectorAll(`img[data-partid^="${FOXFIRE.PREFIX}"]`).forEach((img) => {
+      FOXFIRE.ensureWrapper(img as HTMLImageElement);
+      FOXFIRE.applyToImage(img as HTMLImageElement, map);
     });
   }
 
@@ -22,7 +22,7 @@
 
     chrome.storage.onChanged.addListener((changes: any, area: string) => {
       if (area !== "local") return;
-      if (changes[WISP.STORE_KEY]) scanAndEnhance().catch(console.error);
+      if (changes[FOXFIRE.STORE_KEY]) scanAndEnhance().catch(console.error);
     });
   }
 

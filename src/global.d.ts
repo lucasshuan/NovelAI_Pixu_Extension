@@ -22,7 +22,7 @@ declare global {
   }
 
   interface Window {
-    __wisp?: Wisp;
+    __foxfire?: Wisp;
   }
 
   const chrome: any;
