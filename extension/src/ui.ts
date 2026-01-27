@@ -11,9 +11,13 @@
     if (!pid?.startsWith(FOXFIRE.PREFIX)) return;
     const slotKey = FOXFIRE.slotKeyFromImg(img);
     if (!slotKey) return;
-    const dataUrl = map[slotKey];
-    if (!dataUrl) return;
-    if (img.src !== dataUrl) img.src = dataUrl;
+    const entry = map[slotKey];
+    if (!entry?.imageId) return;
+    const url = await FOXFIRE.getImageUrl(entry.imageId);
+    if (!url) return;
+    if (img.dataset.foxfireImageId === entry.imageId && img.src === url) return;
+    img.dataset.foxfireImageId = entry.imageId;
+    img.src = url;
   };
 
   FOXFIRE.ensureWrapper = function ensureWrapper(img: HTMLImageElement) {
@@ -58,11 +62,10 @@
       '[data-foxfire-drop="1"]',
     ) as HTMLElement | null;
 
-    const saveDataUrl = async (dataUrl: string) => {
-      img.src = dataUrl;
+    const saveBlob = async (blob: Blob) => {
+      await FOXFIRE.saveSlotImage(slotKey, blob);
       const map = await FOXFIRE.loadMap();
-      map[slotKey] = dataUrl;
-      await FOXFIRE.saveMap(map);
+      await FOXFIRE.applyToImage(img, map);
     };
 
     const handleBlob = async (blob: Blob | undefined) => {
@@ -72,7 +75,8 @@
       reader.onload = async () => {
         const dataUrl = String(reader.result);
         if (!dataUrl.startsWith("data:image/")) return;
-        await saveDataUrl(dataUrl);
+        const blob = FOXFIRE.dataUrlToBlob(dataUrl);
+        await saveBlob(blob);
       };
       reader.readAsDataURL(blob);
     };
@@ -137,7 +141,8 @@
       if (!url) return false;
 
       if (url.startsWith("data:image/")) {
-        await saveDataUrl(url);
+        const blob = FOXFIRE.dataUrlToBlob(url);
+        await saveBlob(blob);
         return true;
       }
 
