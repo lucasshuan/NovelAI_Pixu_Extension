@@ -18,6 +18,7 @@
     if (img.dataset.foxfireImageId === entry.imageId && img.src === url) return;
     img.dataset.foxfireImageId = entry.imageId;
     img.src = url;
+    img.loading = "lazy";
   };
 
   FOXFIRE.ensureWrapper = function ensureWrapper(img: HTMLImageElement) {
