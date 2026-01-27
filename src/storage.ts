@@ -1,8 +1,8 @@
 (() => {
   const root = globalThis as unknown as Window;
-  const FOXFIRE = (root.__foxfire ??= {} as Wisp);
+  const PIXU = (root.__pixu ??= {} as Wisp);
 
-  const DB_NAME = "foxfire";
+  const DB_NAME = "pixu";
   const DB_VERSION = 1;
   const STORE_IMAGES = "images";
   const STORE_MAPS = "storyMaps";
@@ -40,7 +40,7 @@
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
       req.onblocked = () => {
-        console.warn("FOXFIRE IDB open blocked");
+        console.warn("PIXU IDB open blocked");
       };
     });
     return dbPromise;
@@ -60,7 +60,7 @@
     });
 
   const resolveStoryId = (storyId?: string) =>
-    storyId ?? FOXFIRE.getStoryId?.() ?? "global";
+    storyId ?? PIXU.getStoryId?.() ?? "global";
 
   const makeId = () => {
     if (crypto?.randomUUID) return crypto.randomUUID();
@@ -122,7 +122,7 @@
     }
   };
 
-  FOXFIRE.loadMap = async function loadMap(
+  PIXU.loadMap = async function loadMap(
     storyId?: string,
   ): Promise<SlotImageMap> {
     try {
@@ -130,12 +130,12 @@
       const record = await getStoryRecord(resolved);
       return record?.slots || {};
     } catch (err) {
-      console.warn("FOXFIRE loadMap error:", err);
+      console.warn("PIXU loadMap error:", err);
       return {};
     }
   };
 
-  FOXFIRE.saveMap = async function saveMap(
+  PIXU.saveMap = async function saveMap(
     map: SlotImageMap,
     storyId?: string,
   ): Promise<void> {
@@ -147,11 +147,11 @@
         updatedAt: Date.now(),
       });
     } catch (err) {
-      console.warn("FOXFIRE saveMap error:", err);
+      console.warn("PIXU saveMap error:", err);
     }
   };
 
-  FOXFIRE.getImageUrl = async function getImageUrl(
+  PIXU.getImageUrl = async function getImageUrl(
     imageId: string,
   ): Promise<string | undefined> {
     if (!imageId) return undefined;
@@ -164,12 +164,12 @@
       objectUrlCache.set(imageId, url);
       return url;
     } catch (err) {
-      console.warn("FOXFIRE getImageUrl error:", err);
+      console.warn("PIXU getImageUrl error:", err);
       return undefined;
     }
   };
 
-  FOXFIRE.deleteImage = async function deleteImage(
+  PIXU.deleteImage = async function deleteImage(
     imageId: string,
   ): Promise<void> {
     if (!imageId) return;
@@ -177,17 +177,17 @@
       revokeObjectUrl(imageId);
       await deleteImageRecord(imageId);
     } catch (err) {
-      console.warn("FOXFIRE deleteImage error:", err);
+      console.warn("PIXU deleteImage error:", err);
     }
   };
 
-  FOXFIRE.saveSlotImage = async function saveSlotImage(
+  PIXU.saveSlotImage = async function saveSlotImage(
     slotKey: string,
     blob: Blob,
     storyId?: string,
   ): Promise<SlotImageRef> {
     const resolved = resolveStoryId(storyId);
-    const map = await FOXFIRE.loadMap(resolved);
+    const map = await PIXU.loadMap(resolved);
     const prev = map[slotKey];
     const record: ImageRecord = {
       id: makeId(),
@@ -212,11 +212,11 @@
         updatedAt: Date.now(),
       });
       if (prev?.imageId && prev.imageId !== record.id) {
-        await FOXFIRE.deleteImage(prev.imageId);
+        await PIXU.deleteImage(prev.imageId);
       }
       return nextRef;
     } catch (err) {
-      console.warn("FOXFIRE saveSlotImage error:", err);
+      console.warn("PIXU saveSlotImage error:", err);
       throw err;
     }
   };

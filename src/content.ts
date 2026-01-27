@@ -1,15 +1,17 @@
 (() => {
   const root = globalThis as unknown as Window;
-  const FOXFIRE = (root.__foxfire ??= {} as Wisp);
+  const PIXU = (root.__pixu ??= {} as Wisp);
 
   async function scanAndEnhance() {
-    const map = await FOXFIRE.loadMap();
-    console.log("searching for images!");
+    const map = await PIXU.loadMap();
+    document.querySelectorAll('div[data-partid^="cg-warning"]').forEach((div) => {
+      div.remove();
+    });
     document
-      .querySelectorAll(`img[data-partid^="${FOXFIRE.PREFIX}"]`)
+      .querySelectorAll(`img[data-partid^="${PIXU.PREFIX}"]`)
       .forEach((img) => {
-        FOXFIRE.ensureWrapper(img as HTMLImageElement);
-        FOXFIRE.applyToImage(img as HTMLImageElement, map);
+        PIXU.ensureWrapper(img as HTMLImageElement);
+        PIXU.applyToImage(img as HTMLImageElement, map);
       });
   }
 
@@ -27,7 +29,7 @@
     };
 
     const notifyLocationChange = () => {
-      window.dispatchEvent(new Event("foxfire-locationchange"));
+      window.dispatchEvent(new Event("pixu-locationchange"));
     };
 
     const patchHistory = (method: "pushState" | "replaceState") => {
@@ -43,7 +45,7 @@
     patchHistory("replaceState");
     window.addEventListener("popstate", notifyLocationChange);
     window.addEventListener("hashchange", notifyLocationChange);
-    window.addEventListener("foxfire-locationchange", triggerLocationScan);
+    window.addEventListener("pixu-locationchange", triggerLocationScan);
   }
 
   main().catch(console.error);

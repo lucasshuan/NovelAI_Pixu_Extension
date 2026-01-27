@@ -1,4 +1,4 @@
-export {};
+export { };
 
 declare global {
   type SlotImageRef = {
@@ -39,7 +39,7 @@ declare global {
   }
 
   interface Window {
-    __foxfire?: Wisp;
+    __pixu?: Wisp;
   }
 
   const chrome: any;

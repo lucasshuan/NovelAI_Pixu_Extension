@@ -1,42 +1,41 @@
 (() => {
   const root = globalThis as unknown as Window;
-  const FOXFIRE = (root.__foxfire ??= {} as Wisp);
+  const PIXU = (root.__pixu ??= {} as Wisp);
 
-  FOXFIRE.applyToImage = async function applyToImage(
+  PIXU.applyToImage = async function applyToImage(
     img: HTMLImageElement,
     map: SlotImageMap,
   ) {
-    console.log("Found one image!!", map);
     const pid = img.dataset.partid;
-    if (!pid?.startsWith(FOXFIRE.PREFIX)) return;
-    const slotKey = FOXFIRE.slotKeyFromImg(img);
+    if (!pid?.startsWith(PIXU.PREFIX)) return;
+    const slotKey = PIXU.slotKeyFromImg(img);
     if (!slotKey) return;
     const entry = map[slotKey];
     if (!entry?.imageId) return;
-    const url = await FOXFIRE.getImageUrl(entry.imageId);
+    const url = await PIXU.getImageUrl(entry.imageId);
     if (!url) return;
-    if (img.dataset.foxfireImageId === entry.imageId && img.src === url) return;
-    img.dataset.foxfireImageId = entry.imageId;
+    if (img.dataset.pixuImageId === entry.imageId && img.src === url) return;
+    img.dataset.pixuImageId = entry.imageId;
     img.src = url;
     img.loading = "lazy";
   };
 
-  FOXFIRE.ensureWrapper = function ensureWrapper(img: HTMLImageElement) {
+  PIXU.ensureWrapper = function ensureWrapper(img: HTMLImageElement) {
     if (!(img instanceof HTMLImageElement)) return;
-    if (!img.dataset.partid?.startsWith(FOXFIRE.PREFIX)) return;
+    if (!img.dataset.partid?.startsWith(PIXU.PREFIX)) return;
 
-    const slotKey = FOXFIRE.slotKeyFromImg(img);
+    const slotKey = PIXU.slotKeyFromImg(img);
     if (!slotKey) return;
 
     // Already wrapped?
     if (
       img.closest?.(
-        `[data-foxfire-wrap="1"][data-slot-key="${CSS.escape(slotKey)}"]`,
+        `[data-pixu-wrap="1"][data-slot-key="${CSS.escape(slotKey)}"]`,
       )
     )
       return;
 
-    const { wrap, input } = FOXFIRE.createWrap(slotKey);
+    const { wrap, input } = PIXU.createWrap(slotKey);
 
     if (!input) return;
 
@@ -60,13 +59,13 @@
     img.style.paddingLeft = "0";
 
     const dropOverlay = wrap.querySelector(
-      '[data-foxfire-drop="1"]',
+      '[data-pixu-drop="1"]',
     ) as HTMLElement | null;
 
     const saveBlob = async (blob: Blob) => {
-      await FOXFIRE.saveSlotImage(slotKey, blob);
-      const map = await FOXFIRE.loadMap();
-      await FOXFIRE.applyToImage(img, map);
+      await PIXU.saveSlotImage(slotKey, blob);
+      const map = await PIXU.loadMap();
+      await PIXU.applyToImage(img, map);
     };
 
     const handleBlob = async (blob: Blob | undefined) => {
@@ -76,7 +75,7 @@
       reader.onload = async () => {
         const dataUrl = String(reader.result);
         if (!dataUrl.startsWith("data:image/")) return;
-        const blob = FOXFIRE.dataUrlToBlob(dataUrl);
+        const blob = PIXU.dataUrlToBlob(dataUrl);
         await saveBlob(blob);
       };
       reader.readAsDataURL(blob);
@@ -142,7 +141,7 @@
       if (!url) return false;
 
       if (url.startsWith("data:image/")) {
-        const blob = FOXFIRE.dataUrlToBlob(url);
+        const blob = PIXU.dataUrlToBlob(url);
         await saveBlob(blob);
         return true;
       }
@@ -158,9 +157,9 @@
       }
     };
 
-    (wrap as any).__foxfireSetDragActive = setDragActive;
-    (wrap as any).__foxfireHasImageDrag = hasImageDrag;
-    (wrap as any).__foxfireHandleDrop = handleDroppedData;
+    (wrap as any).__pixuSetDragActive = setDragActive;
+    (wrap as any).__pixuHasImageDrag = hasImageDrag;
+    (wrap as any).__pixuHandleDrop = handleDroppedData;
 
     input.addEventListener("change", async () => {
       await handleFile(input.files?.[0]);
@@ -206,7 +205,7 @@
     });
 
     const ensureGlobalDropShield = () => {
-      const state = FOXFIRE as unknown as { _dragShieldInstalled?: boolean };
+      const state = PIXU as unknown as { _dragShieldInstalled?: boolean };
       if (state._dragShieldInstalled) return;
       state._dragShieldInstalled = true;
 
@@ -214,7 +213,7 @@
 
       const setActiveFor = (wrapEl: HTMLElement | null, active: boolean) => {
         if (!wrapEl) return;
-        const setter = (wrapEl as any).__foxfireSetDragActive as
+        const setter = (wrapEl as any).__pixuSetDragActive as
           | ((value: boolean) => void)
           | undefined;
         if (setter) {
@@ -240,7 +239,7 @@
             event.clientY,
           ) as HTMLElement[];
           for (const el of stack) {
-            const match = el.closest?.("[data-foxfire-wrap=\"1\"]") as
+            const match = el.closest?.("[data-pixu-wrap=\"1\"]") as
               | HTMLElement
               | null
               | undefined;
@@ -251,7 +250,7 @@
           event.clientX,
           event.clientY,
         ) as HTMLElement | null;
-        return (target?.closest?.("[data-foxfire-wrap=\"1\"]") ??
+        return (target?.closest?.("[data-pixu-wrap=\"1\"]") ??
           null) as HTMLElement | null;
       };
 
@@ -260,7 +259,7 @@
         data: DataTransfer | null,
       ) => {
         if (!wrapEl) return false;
-        const checker = (wrapEl as any).__foxfireHasImageDrag as
+        const checker = (wrapEl as any).__pixuHasImageDrag as
           | ((data: DataTransfer | null) => boolean)
           | undefined;
         return checker ? checker(data) : false;
@@ -271,7 +270,7 @@
         data: DataTransfer | null,
       ) => {
         if (!wrapEl) return;
-        const handler = (wrapEl as any).__foxfireHandleDrop as
+        const handler = (wrapEl as any).__pixuHandleDrop as
           | ((data: DataTransfer | null) => Promise<boolean>)
           | undefined;
         if (handler) {
@@ -280,7 +279,7 @@
       };
 
       const hasAnyWrap = () =>
-        document.querySelector("[data-foxfire-wrap=\"1\"]") !== null;
+        document.querySelector("[data-pixu-wrap=\"1\"]") !== null;
 
       const isImageLikeDrag = (data: DataTransfer | null) => {
         if (!data) return false;
