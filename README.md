@@ -7,7 +7,7 @@
 
 ## What is this?
 
-Pixu is a small browser extension for NovelAI that makes moving images into your stories easier. It works alongside <a href="https://github.com/lucasshuan/NovelAI_Pixu_Naiscript">Pixu NovelAI user script</a>.
+Pixu is a lightweight browser extension for NovelAI that allows you to display images in your stories to enhance immersion. It works alongside <a href="https://github.com/lucasshuan/NovelAI_Pixu_Naiscript">Pixu NovelAI user script</a>.
 
 Images are stored locally in your browser, so nothing is uploaded anywhere else.
 
