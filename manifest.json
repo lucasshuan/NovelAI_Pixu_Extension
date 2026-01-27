@@ -1,0 +1,36 @@
+{
+    "manifest_version": 3,
+    "name": "NAI Wisp",
+    "version": "0.1.0",
+    "description": "Using together with the \"Image Slots\" user script, allows you to replace slots with persistent images stored in the browser.",
+    "icons": {
+        "16": "icon.png",
+        "48": "icon.png",
+        "128": "icon.png"
+    },
+    "permissions": [
+        "storage",
+        "unlimitedStorage"
+    ],
+    "host_permissions": [
+        "https://novelai.net/*"
+    ],
+    "background": {
+        "service_worker": "sw.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://novelai.net/*"
+            ],
+            "js": [
+                "wisp-core.js",
+                "wisp-template.js",
+                "wisp-storage.js",
+                "wisp-ui.js",
+                "content.js"
+            ],
+            "run_at": "document_start"
+        }
+    ]
+}

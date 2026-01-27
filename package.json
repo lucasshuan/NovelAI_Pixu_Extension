@@ -1,0 +1,14 @@
+{
+  "name": "nai-wisp",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "copy:static": "node scripts/copy-static.mjs",
+    "build": "npm run copy:static && tsc -p tsconfig.json",
+    "watch": "npm run copy:static && tsc -p tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
