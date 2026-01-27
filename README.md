@@ -7,7 +7,7 @@
 
 ## What is this?
 
-Pixu is a small browser extension for NovelAI that makes moving images into your stories easier.
+Pixu is a small browser extension for NovelAI that makes moving images into your stories easier. It works alongside <a href="https://github.com/lucasshuan/NovelAI_Pixu_Naiscript">Pixu NovelAI user script</a>.
 
 Images are stored locally in your browser, so nothing is uploaded anywhere else.
 
@@ -21,12 +21,14 @@ You can grab an image from NovelAI image generator and drop it straight into you
 
 - Grab the latest release zip
 - Load it as an unpacked extension in your browser
-- Download and import the script into your User Scripts https://github.com/lucasshuan/NovelAI_Pixu_Naiscript/releases
+- <a href="https://github.com/lucasshuan/NovelAI_Pixu_Naiscript/releases">Download</a> and import the script into your User Scripts
 - Open the NovelAI story page https://novelai.net/stories
 
 ## Planned Features
 
-- User
+- **Image Generator Integration**: Enable in-story image creation via the NovelAI Image Generator, so you never leave the story view.
+- **Scene Auto-Generation**: Add a one-click option to generate images from selected scenes or passages.
+- **Character Galleries**: Build local character galleries that keep images and metadata organized.
 
 ## Known Issues
 
