@@ -1,9 +1,0 @@
-compatibilityVersion: naiscript-1.0
-id: 781dc32b-fb21-424a-a691-46b353d3f195
-name: Foxfire
-createdAt: 1769472066066
-updatedAt: 1769533456
-version: 0.1.0
-author: Noble
-memoryLimit: 64
-description: Helper to be used alongside NovelAI Foxfire Extension
