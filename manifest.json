@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "NovelAI Foxfire",
     "version": "0.1.0",
-    "description": "Replace NovelAI story images with your own and restore them automatically on reload.",
+    "description": "Use your own story images on NovelAI, designed to work alongside an user script.",
     "icons": {
         "16": "icon.png",
         "48": "icon.png",
