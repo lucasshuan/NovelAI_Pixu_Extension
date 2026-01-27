@@ -1,6 +1,6 @@
 <div align="center">
     <img src="icon.png">
-    <h1>Pixu for NovelAI</h1>
+    <h1>Pixu for NovelAI (Chrome Extension)</h1>
 </div>
 
     Not affiliated with Anlatan or NovelAI.
