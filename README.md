@@ -1,9 +1,9 @@
 <div align="center">
-    <img height="240px" src="icon.png">
-    <h1>Pixu for NovelAI (Chrome Extension)</h1>
+<img height="240px" src="icon.png">
+<h1>Pixu for NovelAI (Browser Extension)</h1>
+<i>⚠️ Not affiliated with Anlatan or NovelAI.</i>
+<h3>Works on Opera GX, Firefox and Chrome.</h3> 
 </div>
-
-    Not affiliated with Anlatan or NovelAI.
 
 ## What is this?
 
@@ -31,10 +31,6 @@ You can grab an image from NovelAI image generator and drop it straight into you
 - **Scene Auto-Generation**: Add a one-click option to generate images from selected scenes or passages.
 - **Character Galleries**: Build local character galleries that keep images and metadata organized.
 
-## Known Issues
-
-- Widgets make the screen go flickering when you are all the way scrolled down.
-
 ## Notes
 
-This is a fan-made project. If something breaks, open an issue with steps to reproduce
+This is a fan-made project. If something breaks, open an issue with steps to reproduce.
