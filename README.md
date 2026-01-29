@@ -21,7 +21,7 @@ You can grab an image from NovelAI image generator and drop it straight into you
 
 ## Install
 
-- Grab the latest release zip
+- Grab the <a href="https://github.com/lucasshuan/NovelAI_Pixu_Extension/releases">latest release</a> zip
 - Load it as an unpacked extension in your browser
 - <a href="https://github.com/lucasshuan/NovelAI_Pixu_Naiscript/releases">Download</a> and import the script into your User Scripts
 - Open the <a href="https://novelai.net/stories">NovelAI story page</a>
