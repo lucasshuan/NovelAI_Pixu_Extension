@@ -9,7 +9,7 @@ const dist = path.join(root, "dist");
 
 await mkdir(dist, { recursive: true });
 
-const files = ["manifest.json", "sw.js", "icon.png"];
+const files = ["manifest.json", "icon.png"];
 
 for (const file of files) {
   const src = path.join(root, file);

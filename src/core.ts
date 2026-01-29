@@ -1,10 +1,10 @@
 (() => {
   const root = globalThis as unknown as Window;
-  const PIXU = (root.__pixu ??= {} as Wisp);
+  const PIXU = (root.__pixu ??= {} as Pixu);
 
   PIXU.PREFIX = "cg-img-";
 
-  console.log("NAI Wisp content script injected on:", location.href);
+  console.log("NAI Pixu content script injected on:", location.href);
 
   PIXU.getStoryId = function getStoryId(): string {
     try {

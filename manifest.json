@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Pixu for NovelAI",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Use your own story images on NovelAI, designed to work alongside an user script",
     "icons": {
         "16": "icon.png",
@@ -15,9 +15,6 @@
     "host_permissions": [
         "https://novelai.net/*"
     ],
-    "background": {
-        "service_worker": "sw.js"
-    },
     "content_scripts": [
         {
             "matches": [

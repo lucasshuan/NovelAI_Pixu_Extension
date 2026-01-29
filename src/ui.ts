@@ -1,6 +1,6 @@
 (() => {
   const root = globalThis as unknown as Window;
-  const PIXU = (root.__pixu ??= {} as Wisp);
+  const PIXU = (root.__pixu ??= {} as Pixu);
 
   PIXU.applyToImage = async function applyToImage(
     img: HTMLImageElement,
@@ -49,6 +49,7 @@
     wrap.style.outlineOffset = "4px";
     wrap.style.transition = "outline-color 120ms ease";
     wrap.addEventListener("click", () => input.click());
+    img.style.display = "inline";
     img.style.transition = "filter 0.3s ease";
     img.style.position = "relative";
     img.style.zIndex = "1";

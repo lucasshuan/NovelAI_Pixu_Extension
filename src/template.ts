@@ -1,6 +1,6 @@
 (() => {
   const root = globalThis as unknown as Window;
-  const PIXU = (root.__pixu ??= {} as Wisp);
+  const PIXU = (root.__pixu ??= {} as Pixu);
 
   const WRAP_TEMPLATE = document.createElement("template");
   WRAP_TEMPLATE.innerHTML = `

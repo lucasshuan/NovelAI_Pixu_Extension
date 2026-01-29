@@ -15,8 +15,11 @@ declare global {
     input: HTMLInputElement | null;
   }
 
-  interface Wisp {
+  type Base64AssetMap = Record<string, string>;
+
+  interface Pixu {
     PREFIX: string;
+    base64Assets: Base64AssetMap;
     slotKeyFromImg: (img: HTMLImageElement) => string | undefined;
     extWrapIdFor: (slotKey: string) => string;
     dataUrlToBlob: (dataUrl: string) => Blob;
@@ -39,8 +42,6 @@ declare global {
   }
 
   interface Window {
-    __pixu?: Wisp;
+    __pixu?: Pixu;
   }
-
-  const chrome: any;
 }

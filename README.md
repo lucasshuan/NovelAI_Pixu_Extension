@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="icon.png">
+    <img height="240px" src="icon.png">
     <h1>Pixu for NovelAI (Chrome Extension)</h1>
 </div>
 
