@@ -11,7 +11,9 @@ Pixu is a lightweight browser extension for NovelAI that allows you to display i
 
 Images are stored locally in your browser, so nothing is uploaded anywhere else.
 
-## How it works
+## Features
+
+### Drag and Drop
 
 You can grab an image from NovelAI image generator and drop it straight into your story, and Pixu handles the insert/attach step for you.
 
