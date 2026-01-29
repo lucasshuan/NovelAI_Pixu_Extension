@@ -1,9 +1,12 @@
 <div align="center">
-    <img src="icon.png">
-    <h1>Pixu for NovelAI (Chrome Extension)</h1>
+<img src="icon.png">
+
+<h1>Pixu for NovelAI (Browser Extension)</h1>
+<i>⚠️ Not affiliated with Anlatan or NovelAI.</i>
+<h3>Works on Opera GX, Firefox and Chrome.</h3> 
+    
 </div>
 
-    Not affiliated with Anlatan or NovelAI.
 
 ## What is this?
 
