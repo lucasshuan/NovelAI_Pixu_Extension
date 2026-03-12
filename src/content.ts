@@ -1,18 +1,27 @@
 import { DATA_ID_PREFIX } from "./constants";
+import { storyIdFromSlotKey, slotKeyFromImg } from "./core";
 import { loadMap } from "./storage";
 import { applyToImage, ensureWrapper } from "./ui";
 
 async function scanAndEnhance() {
-  const map = await loadMap();
   document.querySelectorAll('div[data-partid^="cg-warning"]').forEach((div) => {
     div.remove();
   });
-  document
-    .querySelectorAll(`img[data-partid^="${DATA_ID_PREFIX}"]`)
-    .forEach((img) => {
-      ensureWrapper(img as HTMLImageElement);
-      applyToImage(img as HTMLImageElement, map);
-    });
+  const images = document.querySelectorAll(`img[data-partid^="${DATA_ID_PREFIX}"]`);
+  
+  // First pass: ensure all wrappers exist (synchronous)
+  images.forEach((img) => {
+    ensureWrapper(img as HTMLImageElement);
+  });
+  
+  // Second pass: load maps and apply images (async)
+  for (const img of Array.from(images)) {
+    const slotKey = slotKeyFromImg(img as HTMLImageElement);
+    if (!slotKey) continue;
+    const storyId = storyIdFromSlotKey(slotKey);
+    const map = await loadMap(storyId);
+    applyToImage(img as HTMLImageElement, map);
+  }
 }
 
 async function bootstrap() {

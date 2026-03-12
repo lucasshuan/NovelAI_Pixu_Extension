@@ -18,6 +18,11 @@ export const slotKeyFromImg = function slotKeyFromImg(img: HTMLImageElement) {
   return img.dataset.partid?.slice(DATA_ID_PREFIX.length);
 };
 
+export const storyIdFromSlotKey = function storyIdFromSlotKey(slotKey: string): string {
+  const storyId = slotKey.split(":")[0];
+  return storyId || "global";
+};
+
 export const extWrapIdFor = function extWrapIdFor(slotKey: string) {
   return `pixu-wrap-${CSS.escape(slotKey)}`;
 };

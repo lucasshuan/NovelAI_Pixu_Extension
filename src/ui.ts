@@ -1,7 +1,8 @@
 import { DATA_ID_PREFIX } from "./constants";
-import { dataUrlToBlob, slotKeyFromImg } from "./core";
+import { dataUrlToBlob, slotKeyFromImg, storyIdFromSlotKey } from "./core";
 import { getImageUrl, loadMap, saveSlotImage } from "./storage";
 import { createWrap } from "./template";
+import { assets } from "./assets"; // placeholder image URL
 
 let dragShieldInstalled = false;
 
@@ -13,10 +14,26 @@ export const applyToImage = async function applyToImage(
   if (!pid?.startsWith(DATA_ID_PREFIX)) return;
   const slotKey = slotKeyFromImg(img);
   if (!slotKey) return;
+
+  const setPlaceholder = () => {
+    if (img.src !== assets.placeholder) {
+      img.src = assets.placeholder;
+    }
+    delete img.dataset.pixuImageId;
+  };
+
   const entry = map[slotKey];
-  if (!entry?.imageId) return;
+  if (!entry?.imageId) {
+    setPlaceholder();
+    return;
+  }
+
   const url = await getImageUrl(entry.imageId);
-  if (!url) return;
+  if (!url) {
+    setPlaceholder();
+    return;
+  }
+
   if (img.dataset.pixuImageId === entry.imageId && img.src === url) return;
   img.dataset.pixuImageId = entry.imageId;
   img.src = url;
@@ -66,9 +83,11 @@ export const ensureWrapper = function ensureWrapper(img: HTMLImageElement) {
     '[data-pixu-drop="1"]',
   ) as HTMLElement | null;
 
+  const storyId = storyIdFromSlotKey(slotKey);
+
   const saveBlob = async (blob: Blob) => {
-    await saveSlotImage(slotKey, blob);
-    const map = await loadMap();
+    await saveSlotImage(slotKey, blob, storyId);
+    const map = await loadMap(storyId);
     await applyToImage(img, map);
   };
 
@@ -209,7 +228,7 @@ export const ensureWrapper = function ensureWrapper(img: HTMLImageElement) {
   });
 
   const ensureGlobalDropShield = () => {
-    if (!dragShieldInstalled) return;
+    if (dragShieldInstalled) return;
     dragShieldInstalled = true;
 
     let lastWrap: HTMLElement | null = null;
