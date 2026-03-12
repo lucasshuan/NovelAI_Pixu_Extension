@@ -1,7 +1,3 @@
-(() => {
-  const root = globalThis as unknown as Window;
-  const PIXU = (root.__pixu ??= {} as Pixu);
-
   const WRAP_TEMPLATE = document.createElement("template");
   WRAP_TEMPLATE.innerHTML = `
     <div data-pixu-wrap="1" style="display:inline-block;margin:0;padding:0;height:auto;line-height:0;vertical-align:top;z-index:99999;position:relative;">
@@ -14,18 +10,17 @@
     </div>
   `;
 
-  PIXU.createWrap = function createWrap(slotKey: string): WrapParts {
-    const tplRoot = WRAP_TEMPLATE.content.firstElementChild;
-    if (!tplRoot) {
-      throw new Error("PIXU template missing root element.");
-    }
+export const createWrap = function createWrap(slotKey: string): WrapParts {
+  const tplRoot = WRAP_TEMPLATE.content.firstElementChild;
+  if (!tplRoot) {
+    throw new Error("PIXU template missing root element.");
+  }
 
-    const wrap = tplRoot.cloneNode(true) as HTMLElement;
-    wrap.dataset.slotKey = slotKey;
+  const wrap = tplRoot.cloneNode(true) as HTMLElement;
+  wrap.dataset.slotKey = slotKey;
 
-    const input = wrap.querySelector('[data-role="file"]') as
-      | HTMLInputElement
-      | null;
-    return { wrap, input };
-  };
-})();
+  const input = wrap.querySelector('[data-role="file"]') as
+    | HTMLInputElement
+    | null;
+  return { wrap, input };
+};

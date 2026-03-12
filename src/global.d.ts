@@ -1,4 +1,4 @@
-export { };
+export {};
 
 declare global {
   type SlotImageRef = {
@@ -15,33 +15,19 @@ declare global {
     input: HTMLInputElement | null;
   }
 
-  type Base64AssetMap = Record<string, string>;
-
-  interface Pixu {
-    PREFIX: string;
-    base64Assets: Base64AssetMap;
-    slotKeyFromImg: (img: HTMLImageElement) => string | undefined;
-    extWrapIdFor: (slotKey: string) => string;
-    dataUrlToBlob: (dataUrl: string) => Blob;
-    getStoryId: () => string;
-    loadMap: (storyId?: string) => Promise<SlotImageMap>;
-    saveMap: (map: SlotImageMap, storyId?: string) => Promise<void>;
-    saveSlotImage: (
-      slotKey: string,
-      blob: Blob,
-      storyId?: string,
-    ) => Promise<SlotImageRef>;
-    getImageUrl: (imageId: string) => Promise<string | undefined>;
-    deleteImage: (imageId: string) => Promise<void>;
-    createWrap: (slotKey: string) => WrapParts;
-    applyToImage: (
-      img: HTMLImageElement,
-      map: SlotImageMap,
-    ) => void | Promise<void>;
-    ensureWrapper: (img: HTMLImageElement) => void;
+  type AssetMap = Record<string, string>;
+  
+  interface BrowserLike {
+    runtime: {
+      getURL(path: string): string;
+    };
   }
 
   interface Window {
-    __pixu?: Pixu;
+    browser?: BrowserLike;
+    chrome?: BrowserLike;
   }
+
+  var browser: BrowserLike | undefined;
+  var chrome: BrowserLike | undefined;
 }

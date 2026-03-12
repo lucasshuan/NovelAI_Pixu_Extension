@@ -1,5 +1,5 @@
 <div align="center">
-<img height="240px" src="icon.png">
+<img height="240px" src="icons/icon.png">
 <h1>Pixu for NovelAI (Browser Extension)</h1>
 <i>⚠️ Not affiliated with Anlatan or NovelAI.</i>
 <h3>Works on Opera GX, Firefox and Chrome.</h3> 

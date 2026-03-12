@@ -1,0 +1,1 @@
+export const DATA_ID_PREFIX = "cg-img-";

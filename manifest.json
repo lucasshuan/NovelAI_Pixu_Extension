@@ -4,9 +4,9 @@
     "version": "0.2.0",
     "description": "Use your own story images on NovelAI, designed to work alongside an user script",
     "icons": {
-        "16": "icon.png",
-        "48": "icon.png",
-        "128": "icon.png"
+        "16": "assets/icon.png",
+        "48": "assets/icon.png",
+        "128": "assets/icon.png"
     },
     "permissions": [
         "storage",
@@ -15,18 +15,18 @@
     "host_permissions": [
         "https://novelai.net/*"
     ],
+    "web_accessible_resources": [
+        {
+        "resources": ["assets/*"],
+        "matches": ["https://novelai.net/*"]
+        }
+    ],
     "content_scripts": [
         {
             "matches": [
                 "https://novelai.net/*"
             ],
-            "js": [
-                "core.js",
-                "template.js",
-                "storage.js",
-                "ui.js",
-                "content.js"
-            ],
+            "js": ["content.js"],
             "run_at": "document_start"
         }
     ]
